@@ -28,5 +28,19 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+ .idea/
+ .vscode/
+
+# Go
+/Proyecto/Backend/bin/
+/Proyecto/Backend/vendor/
+/Proyecto/Backend/*.exe
+/Proyecto/Backend/*.out
+
+# Node / Frontend
+/Proyecto/Frontend/node_modules/
+/Proyecto/Frontend/dist/
+/Proyecto/Frontend/build/
+
+# MacOS
+.DS_Store
