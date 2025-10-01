@@ -2,15 +2,36 @@
 
 echo "🔧 Iniciando setup del proyecto..."
 
-# Backend (Go)
-echo "📦 Instalando dependencias de Go..."
+# 1. Levantar base de datos con Docker Compose
+echo "🐘 Levantando PostgreSQL con Docker Compose..."
+if command -v docker-compose >/dev/null 2>&1; then
+  docker-compose up -d
+else
+  docker compose up -d
+fi
+
+# Esperar unos segundos a que PostgreSQL esté listo
+echo "⏳ Esperando a que la base de datos esté lista..."
+sleep 5
+
+# 2. Ejecutar el script SQL de inicialización
+if [ -f "Proyecto/Backend/cmd/bd/init.sql" ]; then
+  echo "📄 Ejecutando script SQL de inicialización..."
+  docker exec -i pg-demo-compose psql -U testuser -d testdb < Proyecto/Backend/cmd/bd/init.sql
+else
+  echo "⚠️ No se encontró init.sql en Proyecto/Backend/cmd/bd/"
+fi
+
+# 3. Backend (Go)
+echo "📦 Configurando Backend en Go..."
 cd Proyecto/Backend || exit
-go mod init backend
-go get
+if [ ! -f "go.mod" ]; then
+  go mod init backend
+fi
 go mod tidy
 cd ../../
 
-# Frontend
+# 4. Frontend (opcional)
 #read -p "¿Quieres usar Vue o React? (vue/react): " choice
 #
 #if [ "$choice" = "vue" ]; then

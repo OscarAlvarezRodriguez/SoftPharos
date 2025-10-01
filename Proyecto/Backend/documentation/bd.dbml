@@ -1,0 +1,119 @@
+// Pharos Database Schema
+// Definición en DBML
+
+//////////////////////////////////////////////////
+// Roles y Usuarios
+//////////////////////////////////////////////////
+
+Table roles {
+  id integer [primary key, increment]
+  name varchar [not null, unique, note: 'student | professor | admin']
+  description text
+  created_at timestamp
+}
+
+Table users {
+  id integer [primary key, increment]
+  name varchar
+  email varchar [unique, not null]
+  password varchar [not null]
+  role_id integer [not null]
+  created_at timestamp
+}
+
+//////////////////////////////////////////////////
+// Proyectos y Equipos
+//////////////////////////////////////////////////
+
+Table projects {
+  id integer [primary key, increment]
+  name varchar
+  objective text
+  created_by integer [not null] // user_id del creador
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table project_members {
+  id integer [primary key, increment]
+  project_id integer [not null]
+  user_id integer [not null]
+  role varchar [note: 'owner | member']
+  joined_at timestamp
+}
+
+//////////////////////////////////////////////////
+// Línea de Tiempo e Hitos
+//////////////////////////////////////////////////
+
+Table milestones {
+  id integer [primary key, increment]
+  project_id integer [not null]
+  title varchar
+  description text
+  class_week integer [note: 'Número de semana o clase']
+  created_at timestamp
+}
+
+Table deliverables {
+  id integer [primary key, increment]
+  milestone_id integer [not null]
+  url text [not null, note: 'Link a repositorio/documento']
+  type varchar [note: 'document | diagram | code | reflection']
+  created_at timestamp
+}
+
+//////////////////////////////////////////////////
+// Evidencias, Reflexión y Retroalimentación
+//////////////////////////////////////////////////
+
+Table feedback {
+  id integer [primary key, increment]
+  milestone_id integer [not null]
+  professor_id integer [not null]
+  content text [not null]
+  created_at timestamp
+}
+
+//////////////////////////////////////////////////
+// Interacciones y Colaboración
+//////////////////////////////////////////////////
+
+Table comments {
+  id integer [primary key, increment]
+  milestone_id integer [not null]
+  user_id integer [not null]
+  content text
+  created_at timestamp
+}
+
+Table reactions {
+  id integer [primary key, increment]
+  milestone_id integer [not null]
+  user_id integer [not null]
+  type varchar [note: 'like | dislike | star']
+  created_at timestamp
+}
+
+//////////////////////////////////////////////////
+// Relaciones
+//////////////////////////////////////////////////
+
+Ref: users.role_id > roles.id
+
+Ref: projects.created_by > users.id
+
+Ref: project_members.project_id > projects.id
+Ref: project_members.user_id > users.id
+
+Ref: milestones.project_id > projects.id
+Ref: deliverables.milestone_id > milestones.id
+
+Ref: feedback.milestone_id > milestones.id
+Ref: feedback.professor_id > users.id
+
+Ref: comments.milestone_id > milestones.id
+Ref: comments.user_id > users.id
+
+Ref: reactions.milestone_id > milestones.id
+Ref: reactions.user_id > users.id
