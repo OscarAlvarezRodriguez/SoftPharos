@@ -56,7 +56,7 @@ func NewClient(cfg Config) (*Client, error) {
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	log.Println("✅ Conectado exitosamente a PostgreSQL con GORM")
+	log.Println("Conectado exitosamente a PostgreSQL con GORM")
 
 	return &Client{DB: db}, nil
 }

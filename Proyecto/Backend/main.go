@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
-	"softpharos/internal/core/domain"
-	"softpharos/internal/infra/postgres"
-
 	"github.com/joho/godotenv"
+
+	"softpharos/internal/infra/postgres"
+	"softpharos/internal/infra/postgres/models"
 )
 
 func main() {
@@ -68,9 +68,9 @@ func main() {
 		log.Printf("✅ Rol admin encontrado con ID: %d", adminRole.ID)
 	}
 
-	// Ejemplo 4: Consulta directa con GORM para ver usuarios
+	// Ejemplo 4: Consulta directa con GORM para ver usuarios (usando modelos de persistencia)
 	log.Println("\n👥 Obteniendo todos los usuarios...")
-	var users []domain.User
+	var users []models.UserModel
 	result := client.DB.Preload("Role").Find(&users)
 	if result.Error != nil {
 		log.Printf("⚠️  Error al obtener usuarios: %v", result.Error)

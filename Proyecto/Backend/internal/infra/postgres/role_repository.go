@@ -2,57 +2,66 @@ package postgres
 
 import (
 	"context"
-	"softpharos/internal/core/domain"
+
+	"softpharos/internal/core/domain/role"
+	"softpharos/internal/infra/postgres/mappers"
+	"softpharos/internal/infra/postgres/models"
 )
 
-// RoleRepository maneja las operaciones de la entidad Role
 type RoleRepository struct {
 	client *Client
 }
 
-// NewRoleRepository crea una nueva instancia del repositorio de roles
 func NewRoleRepository(client *Client) *RoleRepository {
 	return &RoleRepository{client: client}
 }
 
-// GetAll obtiene todos los roles
-func (r *RoleRepository) GetAll(ctx context.Context) ([]domain.Role, error) {
-	var roles []domain.Role
-	result := r.client.DB.WithContext(ctx).Find(&roles)
-	return roles, result.Error
-}
-
-// GetByID obtiene un rol por su ID
-func (r *RoleRepository) GetByID(ctx context.Context, id int) (*domain.Role, error) {
-	var role domain.Role
-	result := r.client.DB.WithContext(ctx).First(&role, id)
+func (r *RoleRepository) GetAll(ctx context.Context) ([]role.Role, error) {
+	var roleModels []models.RoleModel
+	result := r.client.DB.WithContext(ctx).Find(&roleModels)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return &role, nil
+
+	return mappers.RoleListToDomain(roleModels), nil
 }
 
-// GetByName obtiene un rol por su nombre
-func (r *RoleRepository) GetByName(ctx context.Context, name string) (*domain.Role, error) {
-	var role domain.Role
-	result := r.client.DB.WithContext(ctx).Where("name = ?", name).First(&role)
+func (r *RoleRepository) GetByID(ctx context.Context, id int) (*role.Role, error) {
+	var roleModel models.RoleModel
+	result := r.client.DB.WithContext(ctx).First(&roleModel, id)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return &role, nil
+
+	return mappers.RoleToDomain(&roleModel), nil
 }
 
-// Create crea un nuevo rol
-func (r *RoleRepository) Create(ctx context.Context, role *domain.Role) error {
-	return r.client.DB.WithContext(ctx).Create(role).Error
+func (r *RoleRepository) GetByName(ctx context.Context, name string) (*role.Role, error) {
+	var roleModel models.RoleModel
+	result := r.client.DB.WithContext(ctx).Where("name = ?", name).First(&roleModel)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return mappers.RoleToDomain(&roleModel), nil
 }
 
-// Update actualiza un rol existente
-func (r *RoleRepository) Update(ctx context.Context, role *domain.Role) error {
-	return r.client.DB.WithContext(ctx).Save(role).Error
+func (r *RoleRepository) Create(ctx context.Context, domainRole *role.Role) error {
+	roleModel := mappers.RoleToModel(domainRole)
+	result := r.client.DB.WithContext(ctx).Create(roleModel)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	domainRole.ID = roleModel.ID
+	return nil
 }
 
-// Delete elimina un rol
+func (r *RoleRepository) Update(ctx context.Context, domainRole *role.Role) error {
+	roleModel := mappers.RoleToModel(domainRole)
+	return r.client.DB.WithContext(ctx).Save(roleModel).Error
+}
+
 func (r *RoleRepository) Delete(ctx context.Context, id int) error {
-	return r.client.DB.WithContext(ctx).Delete(&domain.Role{}, id).Error
+	return r.client.DB.WithContext(ctx).Delete(&models.RoleModel{}, id).Error
 }
