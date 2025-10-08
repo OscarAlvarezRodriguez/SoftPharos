@@ -2,7 +2,7 @@ package mappers
 
 import (
 	"softpharos/internal/core/domain/role"
-	"softpharos/internal/infra/postgres/models"
+	"softpharos/internal/infra/databases/models"
 )
 
 // RoleToDomain convierte un modelo de persistencia a entidad de dominio

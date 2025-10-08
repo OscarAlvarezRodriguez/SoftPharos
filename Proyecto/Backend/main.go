@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
-	"log"
-
 	"github.com/joho/godotenv"
-
-	"softpharos/internal/infra/postgres"
-	"softpharos/internal/infra/postgres/models"
+	"log"
+	"softpharos/internal/infra/databases"
+	"softpharos/internal/infra/databases/models"
+	"softpharos/internal/infra/repository"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 	}
 
 	// Crear cliente PostgreSQL con GORM desde variables de entorno
-	client, err := postgres.NewClientFromEnv()
+	client, err := databases.NewClientFromEnv()
 	if err != nil {
 		log.Fatalf("❌ Error al conectar con PostgreSQL: %v", err)
 	}
@@ -31,7 +30,7 @@ func main() {
 	log.Println("✅ Conectado a PostgreSQL con GORM")
 
 	// Crear repositorio de roles
-	roleRepo := postgres.NewRoleRepository(client)
+	roleRepo := repository.NewRoleRepository(client)
 
 	ctx := context.Background()
 

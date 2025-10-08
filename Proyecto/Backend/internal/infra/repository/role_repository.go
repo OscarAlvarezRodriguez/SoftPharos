@@ -1,18 +1,18 @@
-package postgres
+package repository
 
 import (
 	"context"
-
 	"softpharos/internal/core/domain/role"
-	"softpharos/internal/infra/postgres/mappers"
-	"softpharos/internal/infra/postgres/models"
+	"softpharos/internal/infra/databases"
+	"softpharos/internal/infra/databases/mappers"
+	"softpharos/internal/infra/databases/models"
 )
 
 type RoleRepository struct {
-	client *Client
+	client *databases.Client
 }
 
-func NewRoleRepository(client *Client) *RoleRepository {
+func NewRoleRepository(client *databases.Client) *RoleRepository {
 	return &RoleRepository{client: client}
 }
 

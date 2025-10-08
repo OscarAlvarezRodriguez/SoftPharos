@@ -2,7 +2,7 @@ package mappers
 
 import (
 	"softpharos/internal/core/domain/user"
-	"softpharos/internal/infra/postgres/models"
+	"softpharos/internal/infra/databases/models"
 )
 
 // UserToDomain convierte un modelo de persistencia a entidad de dominio
