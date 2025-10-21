@@ -1,8 +1,20 @@
 #!/bin/bash
+set -e
 
 echo "🔧 Iniciando setup del proyecto..."
 
-# 1. Levantar base de datos con Docker Compose
+# --- 0. Cargar variables del entorno (.env) ---
+if [ -f .env ]; then
+  echo "🕐 Cargando variables desde .env..."
+  set -a
+  source .env
+  set +a
+else
+  echo "❌️ No se encontró el archivo .env. Asegúrate de tener uno antes de continuar."
+  exit 1
+fi
+
+# --- 1. Levantar base de datos con Docker Compose ---
 echo "🐘 Levantando PostgreSQL con Docker Compose..."
 if command -v docker-compose >/dev/null 2>&1; then
   docker-compose up -d
@@ -10,42 +22,73 @@ else
   docker compose up -d
 fi
 
-# Esperar unos segundos a que PostgreSQL esté listo
-echo "⏳ Esperando a que la base de datos esté lista..."
-sleep 5
+PG_CONTAINER=pg-demo-compose
 
-# 2. Ejecutar el script SQL de inicialización
-if [ -f "Proyecto/Backend/cmd/bd/init.sql" ]; then
-  echo "📄 Ejecutando script SQL de inicialización..."
-  docker exec -i pg-demo-compose psql -U testuser -d testdb < Proyecto/Backend/cmd/bd/init.sql
+if [ -z "$PG_CONTAINER" ]; then
+  echo "❌ No se encontró un contenedor PostgreSQL corriendo. Verifica tu docker-compose.yml"
+  exit 1
+fi
+
+# --- 2. Esperar a que PostgreSQL esté listo ---
+echo "🕐 Esperando a que PostgreSQL acepte conexiones..."
+until docker exec "$PG_CONTAINER" pg_isready -U "$DB_USER" -d "$DB_NAME" >/dev/null 2>&1; do
+  sleep 1
+done
+echo "✅ PostgreSQL está listo."
+
+# --- 3. Ejecutar script SQL de inicialización (solo si la BD está vacía) ---
+
+INIT_SQL="Proyecto/Backend/cmd/bd/init.sql"
+
+if [ -f "$INIT_SQL" ]; then
+  echo "🔍 Verificando si la base de datos ya fue inicializada..."
+  TABLE_COUNT=$(docker exec -i "$PG_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" -t -c \
+    "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';" | tr -d '[:space:]')
+
+  if [ "$TABLE_COUNT" = "0" ] || [ -z "$TABLE_COUNT" ]; then
+    echo "🕐 Ejecutando script SQL de inicialización..."
+    docker exec -i "$PG_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" < "$INIT_SQL"
+  else
+    echo "✅ Base de datos ya inicializada. No se ejecutará init.sql."
+  fi
 else
-  echo "⚠️ No se encontró init.sql en Proyecto/Backend/cmd/bd/"
+  echo "⚠️ No se encontró el archivo $INIT_SQL"
 fi
 
-# 3. Backend (Go)
-echo "📦 Configurando Backend en Go..."
+# --- 4. Backend (Go) ---
+echo "🔍 Verificando dependencias del Backend..."
 cd Proyecto/Backend || exit
-if [ ! -f "go.mod" ]; then
-  go mod init backend
+
+if ! command -v go >/dev/null 2>&1; then
+  echo "❌ Go no está instalado. Instálalo antes de continuar."
+  exit 1
 fi
-go mod tidy
+
+if [ ! -f "go.mod" ]; then
+  echo "❌️ No se encontró go.mod. Ejecuta 'go mod init <nombre>' manualmente."
+else
+  echo "🕐 Ejecutando 'go mod tidy'..."
+  go mod tidy
+fi
+
 cd ../../
 
-# 4. Frontend (opcional)
-#read -p "¿Quieres usar Vue o React? (vue/react): " choice
-#
-#if [ "$choice" = "vue" ]; then
-#  echo "📦 Creando frontend con Vue..."
-#  cd Proyecto || exit
-#  npm create vue@latest Frontend
-#  cd ..
-#elif [ "$choice" = "react" ]; then
-#  echo "📦 Creando frontend con React..."
-#  cd Proyecto || exit
-#  npx create-react-app Frontend
-#  cd ..
-#else
-#  echo "⚠️ Opción no válida. No se instaló frontend."
-#fi
+# --- 5. Frontend (Vue 3) ---
+echo "🔍 Verificando dependencias del Frontend (Vue 3)..."
+cd Proyecto/Frontend || exit
 
-echo "✅ Setup finalizado."
+if ! command -v npm >/dev/null 2>&1; then
+  echo "❌ npm no está instalado. Instálalo antes de continuar."
+  exit 1
+fi
+
+if [ -d "node_modules" ]; then
+  echo "✅ Dependencias ya instaladas. Saltando npm install."
+else
+  echo "🔍 Instalando dependencias..."
+  npm install
+fi
+echo "✅ Frontend verificado correctamente."
+
+cd ../../
+echo "✅ Setup finalizado correctamente."
