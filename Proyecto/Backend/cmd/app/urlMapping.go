@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	projectController "softpharos/internal/controllers/project"

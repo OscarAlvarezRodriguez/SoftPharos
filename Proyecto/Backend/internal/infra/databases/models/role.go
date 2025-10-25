@@ -10,5 +10,5 @@ type RoleModel struct {
 }
 
 func (RoleModel) TableName() string {
-	return "roles"
+	return "role"
 }

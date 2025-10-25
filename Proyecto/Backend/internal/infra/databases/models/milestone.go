@@ -13,5 +13,5 @@ type MilestoneModel struct {
 }
 
 func (MilestoneModel) TableName() string {
-	return "milestones"
+	return "milestone"
 }

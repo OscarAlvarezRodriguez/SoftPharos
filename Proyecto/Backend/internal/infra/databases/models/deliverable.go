@@ -12,5 +12,5 @@ type DeliverableModel struct {
 }
 
 func (DeliverableModel) TableName() string {
-	return "deliverables"
+	return "deliverable"
 }

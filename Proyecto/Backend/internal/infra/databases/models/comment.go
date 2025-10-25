@@ -13,5 +13,5 @@ type CommentModel struct {
 }
 
 func (CommentModel) TableName() string {
-	return "comments"
+	return "comment"
 }

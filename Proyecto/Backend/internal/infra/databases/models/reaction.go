@@ -13,5 +13,5 @@ type ReactionModel struct {
 }
 
 func (ReactionModel) TableName() string {
-	return "reactions"
+	return "reaction"
 }

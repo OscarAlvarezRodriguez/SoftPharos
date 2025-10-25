@@ -13,5 +13,5 @@ type UserModel struct {
 }
 
 func (UserModel) TableName() string {
-	return "users"
+	return "user"
 }

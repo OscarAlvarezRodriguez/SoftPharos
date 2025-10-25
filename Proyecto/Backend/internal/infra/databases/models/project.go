@@ -13,5 +13,5 @@ type ProjectModel struct {
 }
 
 func (ProjectModel) TableName() string {
-	return "projects"
+	return "project"
 }
