@@ -5,7 +5,6 @@ import (
 	"softpharos/internal/infra/databases/models"
 )
 
-// UserToDomain convierte un modelo de persistencia a entidad de dominio
 func UserToDomain(model *models.UserModel) *user.User {
 	if model == nil {
 		return nil
@@ -22,7 +21,6 @@ func UserToDomain(model *models.UserModel) *user.User {
 	}
 }
 
-// UserToModel convierte una entidad de dominio a modelo de persistencia
 func UserToModel(domain *user.User) *models.UserModel {
 	if domain == nil {
 		return nil
@@ -39,7 +37,6 @@ func UserToModel(domain *user.User) *models.UserModel {
 	}
 }
 
-// UserListToDomain convierte una lista de modelos a lista de entidades
 func UserListToDomain(modelList []models.UserModel) []user.User {
 	domainList := make([]user.User, len(modelList))
 	for i, model := range modelList {

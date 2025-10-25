@@ -5,7 +5,6 @@ import (
 	"softpharos/internal/infra/databases/models"
 )
 
-// RoleToDomain convierte un modelo de persistencia a entidad de dominio
 func RoleToDomain(model *models.RoleModel) *role.Role {
 	if model == nil {
 		return nil
@@ -19,7 +18,6 @@ func RoleToDomain(model *models.RoleModel) *role.Role {
 	}
 }
 
-// RoleToModel convierte una entidad de dominio a modelo de persistencia
 func RoleToModel(domain *role.Role) *models.RoleModel {
 	if domain == nil {
 		return nil
@@ -33,7 +31,6 @@ func RoleToModel(domain *role.Role) *models.RoleModel {
 	}
 }
 
-// RoleListToDomain convierte una lista de modelos a lista de entidades
 func RoleListToDomain(modelList []models.RoleModel) []role.Role {
 	domainList := make([]role.Role, len(modelList))
 	for i, model := range modelList {
