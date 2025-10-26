@@ -15,7 +15,7 @@ func ProjectToDomain(model *models.ProjectModel) *project.Project {
 		Name:      model.Name,
 		Objective: model.Objective,
 		CreatedBy: model.CreatedBy,
-		Creator:   UserToDomain(model.Creator),
+		Owner:     UserToDomain(model.Owner),
 		CreatedAt: model.CreatedAt,
 		UpdatedAt: model.UpdatedAt,
 	}
@@ -31,7 +31,7 @@ func ProjectToModel(domain *project.Project) *models.ProjectModel {
 		Name:      domain.Name,
 		Objective: domain.Objective,
 		CreatedBy: domain.CreatedBy,
-		Creator:   UserToModel(domain.Creator),
+		Owner:     UserToModel(domain.Owner),
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 	}

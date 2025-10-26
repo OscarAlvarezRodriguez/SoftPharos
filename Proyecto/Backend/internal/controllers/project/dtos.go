@@ -14,16 +14,16 @@ type UpdateProjectRequest struct {
 }
 
 type ProjectResponse struct {
-	ID        int              `json:"id"`
-	Name      *string          `json:"name"`
-	Objective *string          `json:"objective"`
-	CreatedBy int              `json:"created_by"`
-	Creator   *CreatorResponse `json:"creator,omitempty"`
-	CreatedAt time.Time        `json:"created_at"`
-	UpdatedAt time.Time        `json:"updated_at"`
+	ID        int            `json:"id"`
+	Name      *string        `json:"name"`
+	Objective *string        `json:"objective"`
+	CreatedBy int            `json:"created_by"`
+	Owner     *OwnerResponse `json:"owner,omitempty"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
 }
 
-type CreatorResponse struct {
+type OwnerResponse struct {
 	ID    int     `json:"id"`
 	Name  *string `json:"name"`
 	Email string  `json:"email"`

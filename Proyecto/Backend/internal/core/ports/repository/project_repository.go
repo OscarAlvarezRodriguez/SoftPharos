@@ -9,7 +9,7 @@ import (
 type ProjectRepository interface {
 	GetAll(ctx context.Context) ([]project.Project, error)
 	GetByID(ctx context.Context, id int) (*project.Project, error)
-	GetByCreator(ctx context.Context, creatorID int) ([]project.Project, error)
+	GetByOwner(ctx context.Context, ownerID int) ([]project.Project, error)
 	Create(ctx context.Context, project *project.Project) error
 	Update(ctx context.Context, project *project.Project) error
 	Delete(ctx context.Context, id int) error

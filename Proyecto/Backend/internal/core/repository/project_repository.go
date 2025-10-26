@@ -19,7 +19,7 @@ func New(client *databases.Client) repository.ProjectRepository {
 
 func (r *projectRepository) GetAll(ctx context.Context) ([]project.Project, error) {
 	var projectModels []models.ProjectModel
-	result := r.client.DB.WithContext(ctx).Preload("Creator").Find(&projectModels)
+	result := r.client.DB.WithContext(ctx).Preload("Owner").Find(&projectModels)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -29,7 +29,7 @@ func (r *projectRepository) GetAll(ctx context.Context) ([]project.Project, erro
 
 func (r *projectRepository) GetByID(ctx context.Context, id int) (*project.Project, error) {
 	var projectModel models.ProjectModel
-	result := r.client.DB.WithContext(ctx).Preload("Creator").First(&projectModel, id)
+	result := r.client.DB.WithContext(ctx).Preload("Owner").First(&projectModel, id)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -37,11 +37,11 @@ func (r *projectRepository) GetByID(ctx context.Context, id int) (*project.Proje
 	return mappers.ProjectToDomain(&projectModel), nil
 }
 
-func (r *projectRepository) GetByCreator(ctx context.Context, creatorID int) ([]project.Project, error) {
+func (r *projectRepository) GetByOwner(ctx context.Context, ownerID int) ([]project.Project, error) {
 	var projectModels []models.ProjectModel
 	result := r.client.DB.WithContext(ctx).
-		Preload("Creator").
-		Where("created_by = ?", creatorID).
+		Preload("Owner").
+		Where("created_by = ?", ownerID).
 		Find(&projectModels)
 	if result.Error != nil {
 		return nil, result.Error

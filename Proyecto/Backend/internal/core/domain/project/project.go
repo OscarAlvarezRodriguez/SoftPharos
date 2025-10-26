@@ -11,7 +11,7 @@ type Project struct {
 	Name      *string
 	Objective *string
 	CreatedBy int
-	Creator   *user.User
+	Owner     *user.User
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

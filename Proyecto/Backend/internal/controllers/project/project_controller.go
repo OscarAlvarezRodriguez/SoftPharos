@@ -57,8 +57,8 @@ func (c *Controller) GetProjectByID(ctx *gin.Context) {
 }
 
 func (c *Controller) GetProjectsByOwner(ctx *gin.Context) {
-	creatorIDParam := ctx.Param("creatorId")
-	creatorID, err := strconv.Atoi(creatorIDParam)
+	OwnerIDParam := ctx.Param("ownerId")
+	OwnerId, err := strconv.Atoi(OwnerIDParam)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_ID",
@@ -67,7 +67,7 @@ func (c *Controller) GetProjectsByOwner(ctx *gin.Context) {
 		return
 	}
 
-	projects, err := c.projectService.GetProjectsByCreator(ctx.Request.Context(), creatorID)
+	projects, err := c.projectService.GetProjectsByOwner(ctx.Request.Context(), OwnerId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",

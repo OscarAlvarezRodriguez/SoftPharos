@@ -27,19 +27,19 @@ func ToProjectResponse(proj *project.Project) *ProjectResponse {
 		UpdatedAt: proj.UpdatedAt,
 	}
 
-	if proj.Creator != nil {
-		response.Creator = ToCreatorResponse(proj.Creator)
+	if proj.Owner != nil {
+		response.Owner = ToOwnerResponse(proj.Owner)
 	}
 
 	return response
 }
 
-func ToCreatorResponse(user *user.User) *CreatorResponse {
+func ToOwnerResponse(user *user.User) *OwnerResponse {
 	if user == nil {
 		return nil
 	}
 
-	return &CreatorResponse{
+	return &OwnerResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,

@@ -25,8 +25,8 @@ func (s *projectService) GetProjectByID(ctx context.Context, id int) (*project.P
 	return s.projectRepo.GetByID(ctx, id)
 }
 
-func (s *projectService) GetProjectsByCreator(ctx context.Context, creatorID int) ([]project.Project, error) {
-	return s.projectRepo.GetByCreator(ctx, creatorID)
+func (s *projectService) GetProjectsByOwner(ctx context.Context, ownerID int) ([]project.Project, error) {
+	return s.projectRepo.GetByOwner(ctx, ownerID)
 }
 
 func (s *projectService) CreateProject(ctx context.Context, proj *project.Project) error {
