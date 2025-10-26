@@ -39,6 +39,8 @@ echo "✅ PostgreSQL está listo."
 # --- 3. Ejecutar script SQL de inicialización (solo si la BD está vacía) ---
 
 INIT_SQL="Proyecto/Backend/cmd/bd/init.sql"
+SEED_SQL="Proyecto/Backend/cmd/bd/seed.sql"
+SEED_DEV_SQL="Proyecto/Backend/cmd/bd/seed_dev.sql"
 
 if [ -f "$INIT_SQL" ]; then
   echo "🔍 Verificando si la base de datos ya fue inicializada..."
@@ -48,8 +50,28 @@ if [ -f "$INIT_SQL" ]; then
   if [ "$TABLE_COUNT" = "0" ] || [ -z "$TABLE_COUNT" ]; then
     echo "🕐 Ejecutando script SQL de inicialización..."
     docker exec -i "$PG_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" < "$INIT_SQL"
+
+    # Ejecutar seed de datos esenciales
+    if [ -f "$SEED_SQL" ]; then
+      echo "🌱 Poblando base de datos con datos esenciales (seed.sql)..."
+      docker exec -i "$PG_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" < "$SEED_SQL"
+    fi
+
+    # Ejecutar seed de desarrollo (solo si existe)
+    if [ -f "$SEED_DEV_SQL" ]; then
+      echo "🔍 ¿Deseas cargar datos de desarrollo/testing? (y/N)"
+      read -r LOAD_DEV_DATA
+      if [[ "$LOAD_DEV_DATA" =~ ^[Yy]$ ]]; then
+        echo "🌱 Poblando base de datos con datos de desarrollo (seed_dev.sql)..."
+        docker exec -i "$PG_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" < "$SEED_DEV_SQL"
+      else
+        echo "⏭️ Saltando datos de desarrollo."
+      fi
+    fi
   else
     echo "✅ Base de datos ya inicializada. No se ejecutará init.sql."
+    echo "💡 Para poblar datos manualmente, ejecuta:"
+    echo "   docker exec -i $PG_CONTAINER psql -U $DB_USER -d $DB_NAME < $SEED_SQL"
   fi
 else
   echo "⚠️ No se encontró el archivo $INIT_SQL"
