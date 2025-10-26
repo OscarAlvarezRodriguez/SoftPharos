@@ -2,6 +2,7 @@ package project
 
 import (
 	"net/http"
+	"softpharos/internal/controllers"
 	"strconv"
 
 	"softpharos/internal/core/ports/services"
@@ -22,7 +23,7 @@ func New(projectService services.ProjectService) *Controller {
 func (c *Controller) GetAllProjects(ctx *gin.Context) {
 	projects, err := c.projectService.GetAllProjects(ctx.Request.Context())
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",
 			Message: err.Error(),
 		})
@@ -36,7 +37,7 @@ func (c *Controller) GetProjectByID(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_ID",
 			Message: "El ID debe ser un número válido",
 		})
@@ -45,7 +46,7 @@ func (c *Controller) GetProjectByID(ctx *gin.Context) {
 
 	project, err := c.projectService.GetProjectByID(ctx.Request.Context(), id)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, ErrorResponse{
+		ctx.JSON(http.StatusNotFound, controllers.ErrorResponse{
 			Error:   "NOT_FOUND",
 			Message: "Proyecto no encontrado",
 		})
@@ -59,7 +60,7 @@ func (c *Controller) GetProjectsByOwner(ctx *gin.Context) {
 	creatorIDParam := ctx.Param("creatorId")
 	creatorID, err := strconv.Atoi(creatorIDParam)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_ID",
 			Message: "El ID del creador debe ser un número válido",
 		})
@@ -68,7 +69,7 @@ func (c *Controller) GetProjectsByOwner(ctx *gin.Context) {
 
 	projects, err := c.projectService.GetProjectsByCreator(ctx.Request.Context(), creatorID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",
 			Message: err.Error(),
 		})
@@ -81,7 +82,7 @@ func (c *Controller) GetProjectsByOwner(ctx *gin.Context) {
 func (c *Controller) CreateProject(ctx *gin.Context) {
 	var req CreateProjectRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_REQUEST",
 			Message: err.Error(),
 		})
@@ -90,7 +91,7 @@ func (c *Controller) CreateProject(ctx *gin.Context) {
 
 	project := ToProjectDomain(&req)
 	if err := c.projectService.CreateProject(ctx.Request.Context(), project); err != nil {
-		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",
 			Message: err.Error(),
 		})
@@ -104,7 +105,7 @@ func (c *Controller) UpdateProject(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_ID",
 			Message: "El ID debe ser un número válido",
 		})
@@ -113,7 +114,7 @@ func (c *Controller) UpdateProject(ctx *gin.Context) {
 
 	var req UpdateProjectRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_REQUEST",
 			Message: err.Error(),
 		})
@@ -123,7 +124,7 @@ func (c *Controller) UpdateProject(ctx *gin.Context) {
 	// Primero obtenemos el proyecto existente
 	existingProject, err := c.projectService.GetProjectByID(ctx.Request.Context(), id)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, ErrorResponse{
+		ctx.JSON(http.StatusNotFound, controllers.ErrorResponse{
 			Error:   "NOT_FOUND",
 			Message: "Proyecto no encontrado",
 		})
@@ -139,7 +140,7 @@ func (c *Controller) UpdateProject(ctx *gin.Context) {
 	}
 
 	if err := c.projectService.UpdateProject(ctx.Request.Context(), existingProject); err != nil {
-		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",
 			Message: err.Error(),
 		})
@@ -153,7 +154,7 @@ func (c *Controller) DeleteProject(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+		ctx.JSON(http.StatusBadRequest, controllers.ErrorResponse{
 			Error:   "INVALID_ID",
 			Message: "El ID debe ser un número válido",
 		})
@@ -161,14 +162,14 @@ func (c *Controller) DeleteProject(ctx *gin.Context) {
 	}
 
 	if err := c.projectService.DeleteProject(ctx.Request.Context(), id); err != nil {
-		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+		ctx.JSON(http.StatusInternalServerError, controllers.ErrorResponse{
 			Error:   "INTERNAL_ERROR",
 			Message: err.Error(),
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, SuccessResponse{
+	ctx.JSON(http.StatusOK, controllers.SuccessResponse{
 		Message: "Proyecto eliminado exitosamente",
 	})
 }
