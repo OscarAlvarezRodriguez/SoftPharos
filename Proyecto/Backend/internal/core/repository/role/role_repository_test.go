@@ -1,16 +1,18 @@
-package repository
+package role
 
 import (
 	"context"
 	"errors"
 	"regexp"
-	"softpharos/internal/core/domain/role"
 	"testing"
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
+
+	"softpharos/internal/core/domain/role"
+	"softpharos/internal/core/repository"
 )
 
 func TestRoleGetAll(t *testing.T) {
@@ -50,12 +52,12 @@ func TestRoleGetAll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			roles, err := repo.GetAll(ctx)
@@ -108,12 +110,12 @@ func TestRoleGetByID(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			role, err := repo.GetByID(ctx, tt.roleID)
@@ -168,12 +170,12 @@ func TestRoleGetByName(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			role, err := repo.GetByName(ctx, tt.roleName)
@@ -229,12 +231,12 @@ func TestRoleCreate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			err := repo.Create(ctx, tt.role)
@@ -296,12 +298,12 @@ func TestRoleUpdate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			err := repo.Update(ctx, tt.role)
@@ -351,12 +353,12 @@ func TestRoleDelete(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
 
-			repo := NewRoleRepository(client)
+			repo := New(client)
 			ctx := context.Background()
 
 			err := repo.Delete(ctx, tt.roleID)

@@ -1,40 +1,18 @@
-package repository
+package project
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"regexp"
 	"softpharos/internal/core/domain/project"
-	"softpharos/internal/infra/databases"
+	"softpharos/internal/core/repository"
 	"testing"
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-func setupMockDB(t *testing.T) (*databases.Client, sqlmock.Sqlmock, *sql.DB) {
-	sqlDB, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("failed to create mock db: %v", err)
-	}
-
-	dialector := postgres.New(postgres.Config{
-		Conn:       sqlDB,
-		DriverName: "postgres",
-	})
-
-	db, err := gorm.Open(dialector, &gorm.Config{})
-	if err != nil {
-		t.Fatalf("failed to open gorm db: %v", err)
-	}
-
-	client := &databases.Client{DB: db}
-	return client, mock, sqlDB
-}
 
 func TestGetAll(t *testing.T) {
 	name1 := "Project 1"
@@ -83,7 +61,7 @@ func TestGetAll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
@@ -149,7 +127,7 @@ func TestGetByID(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
@@ -210,7 +188,7 @@ func TestCreate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
@@ -278,7 +256,7 @@ func TestUpdate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)
@@ -333,7 +311,7 @@ func TestDelete(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			client, mock, sqlDB := setupMockDB(t)
+			client, mock, sqlDB := repository.SetupMockDB(t)
 			defer sqlDB.Close()
 
 			tt.mockSetup(mock)

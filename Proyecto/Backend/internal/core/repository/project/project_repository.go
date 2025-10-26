@@ -1,4 +1,4 @@
-package repository
+package project
 
 import (
 	"context"
@@ -9,15 +9,15 @@ import (
 	"softpharos/internal/infra/databases/models"
 )
 
-type projectRepository struct {
+type Repository struct {
 	client *databases.Client
 }
 
 func New(client *databases.Client) repository.ProjectRepository {
-	return &projectRepository{client: client}
+	return &Repository{client: client}
 }
 
-func (r *projectRepository) GetAll(ctx context.Context) ([]project.Project, error) {
+func (r *Repository) GetAll(ctx context.Context) ([]project.Project, error) {
 	var projectModels []models.ProjectModel
 	result := r.client.DB.WithContext(ctx).Preload("Owner").Find(&projectModels)
 	if result.Error != nil {
@@ -27,7 +27,7 @@ func (r *projectRepository) GetAll(ctx context.Context) ([]project.Project, erro
 	return mappers.ProjectListToDomain(projectModels), nil
 }
 
-func (r *projectRepository) GetByID(ctx context.Context, id int) (*project.Project, error) {
+func (r *Repository) GetByID(ctx context.Context, id int) (*project.Project, error) {
 	var projectModel models.ProjectModel
 	result := r.client.DB.WithContext(ctx).Preload("Owner").First(&projectModel, id)
 	if result.Error != nil {
@@ -37,7 +37,7 @@ func (r *projectRepository) GetByID(ctx context.Context, id int) (*project.Proje
 	return mappers.ProjectToDomain(&projectModel), nil
 }
 
-func (r *projectRepository) GetByOwner(ctx context.Context, ownerID int) ([]project.Project, error) {
+func (r *Repository) GetByOwner(ctx context.Context, ownerID int) ([]project.Project, error) {
 	var projectModels []models.ProjectModel
 	result := r.client.DB.WithContext(ctx).
 		Preload("Owner").
@@ -50,7 +50,7 @@ func (r *projectRepository) GetByOwner(ctx context.Context, ownerID int) ([]proj
 	return mappers.ProjectListToDomain(projectModels), nil
 }
 
-func (r *projectRepository) Create(ctx context.Context, domainProject *project.Project) error {
+func (r *Repository) Create(ctx context.Context, domainProject *project.Project) error {
 	projectModel := mappers.ProjectToModel(domainProject)
 	result := r.client.DB.WithContext(ctx).Create(projectModel)
 	if result.Error != nil {
@@ -63,11 +63,11 @@ func (r *projectRepository) Create(ctx context.Context, domainProject *project.P
 	return nil
 }
 
-func (r *projectRepository) Update(ctx context.Context, domainProject *project.Project) error {
+func (r *Repository) Update(ctx context.Context, domainProject *project.Project) error {
 	projectModel := mappers.ProjectToModel(domainProject)
 	return r.client.DB.WithContext(ctx).Save(projectModel).Error
 }
 
-func (r *projectRepository) Delete(ctx context.Context, id int) error {
+func (r *Repository) Delete(ctx context.Context, id int) error {
 	return r.client.DB.WithContext(ctx).Delete(&models.ProjectModel{}, id).Error
 }
