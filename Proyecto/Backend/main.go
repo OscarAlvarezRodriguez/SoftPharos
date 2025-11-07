@@ -8,7 +8,6 @@ import (
 	"github.com/joho/godotenv"
 
 	"softpharos/cmd/app"
-	"softpharos/cmd/buildingAPI"
 	"softpharos/internal/infra/databases"
 )
 
@@ -18,21 +17,18 @@ func main() {
 		log.Println("⚠️  No se pudo cargar .env, usando variables de entorno existentes")
 	}
 
-	// Crear cliente de base de datos
+	// Crear e inicializar la instancia única de base de datos (Singleton)
 	dbClient, err := databases.NewClientFromEnv()
 	if err != nil {
 		log.Fatalf("❌ Error al conectar con la base de datos: %v", err)
 	}
-	defer dbClient.Close()
+	databases.InitializeDatabase(dbClient)
+	defer databases.CloseInstance()
 
 	// Verificar conexión
-	if err := dbClient.Ping(); err != nil {
+	if err := databases.GetInstance().Ping(); err != nil {
 		log.Fatalf("❌ Error al hacer ping a la base de datos: %v", err)
 	}
-
-	// Construir dependencias (inyección de dependencias)
-	projectControllers := buildingAPI.BuildProjectController(dbClient)
-	roleControllers := buildingAPI.BuildRoleController(dbClient)
 
 	// Configurar modo de Gin
 	if os.Getenv("ENV") == "production" {
@@ -57,8 +53,8 @@ func main() {
 		c.Next()
 	})
 
-	// Mapear rutas
-	app.MapUrls(router, projectControllers, roleControllers)
+	// Mapear rutas (cada dominio registra sus propias rutas)
+	app.MapUrls(router)
 
 	// Obtener puerto
 	port := os.Getenv("PORT")
