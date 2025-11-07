@@ -32,6 +32,7 @@ func main() {
 
 	// Construir dependencias (inyección de dependencias)
 	projectControllers := buildingAPI.BuildProjectController(dbClient)
+	roleControllers := buildingAPI.BuildRoleController(dbClient)
 
 	// Configurar modo de Gin
 	if os.Getenv("ENV") == "production" {
@@ -57,7 +58,7 @@ func main() {
 	})
 
 	// Mapear rutas
-	app.MapUrls(router, projectControllers)
+	app.MapUrls(router, projectControllers, roleControllers)
 
 	// Obtener puerto
 	port := os.Getenv("PORT")

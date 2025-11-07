@@ -1,12 +1,13 @@
 package app
 
 import (
-	projectController "softpharos/internal/controllers/project"
-
 	"github.com/gin-gonic/gin"
+
+	projectController "softpharos/internal/controllers/project"
+	roleController "softpharos/internal/controllers/role"
 )
 
-func MapUrls(router *gin.Engine, projectCtrl *projectController.Controller) {
+func MapUrls(router *gin.Engine, projectCtrl *projectController.Controller, roleCtrl *roleController.Controller) {
 	v1 := router.Group("")
 	{
 		// Health check
@@ -26,6 +27,14 @@ func MapUrls(router *gin.Engine, projectCtrl *projectController.Controller) {
 			projects.POST("", projectCtrl.CreateProject)
 			projects.PUT("/:id", projectCtrl.UpdateProject)
 			projects.DELETE("/:id", projectCtrl.DeleteProject)
+		}
+
+		// Rutas de roles (solo lectura)
+		roles := v1.Group("/roles")
+		{
+			roles.GET("", roleCtrl.GetAllRoles)
+			roles.GET("/:id", roleCtrl.GetRoleByID)
+			roles.GET("/name/:name", roleCtrl.GetRoleByName)
 		}
 	}
 }
