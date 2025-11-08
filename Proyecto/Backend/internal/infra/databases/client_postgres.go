@@ -11,12 +11,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// Client representa el cliente de conexión a PostgreSQL
 type Client struct {
 	DB *gorm.DB
 }
 
-// Config contiene la configuración de conexión a la BD
 type Config struct {
 	Host     string
 	Port     string
@@ -26,16 +24,15 @@ type Config struct {
 	SSLMode  string
 }
 
-// NewClient crea una nueva instancia del cliente PostgreSQL con GORM
 func NewClient(cfg Config) (*Client, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode,
 	)
 
-	// Configurar logger de GORM
 	gormConfig := &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		// Aquí se puede cambiar el nivel de loggeo de Gorm
+		Logger: logger.Default.LogMode(logger.Silent),
 		NowFunc: func() time.Time {
 			return time.Now().UTC()
 		},
@@ -61,7 +58,6 @@ func NewClient(cfg Config) (*Client, error) {
 	return &Client{DB: db}, nil
 }
 
-// NewClientFromEnv crea un cliente usando variables de entorno
 func NewClientFromEnv() (*Client, error) {
 	cfg := Config{
 		Host:     os.Getenv("DB_HOST"),
@@ -75,7 +71,6 @@ func NewClientFromEnv() (*Client, error) {
 	return NewClient(cfg)
 }
 
-// Close cierra la conexión con la base de datos
 func (c *Client) Close() error {
 	sqlDB, err := c.DB.DB()
 	if err != nil {
