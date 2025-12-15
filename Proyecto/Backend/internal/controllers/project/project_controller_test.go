@@ -329,6 +329,13 @@ func TestUpdateProject(t *testing.T) {
 			expectedStatusCode: http.StatusBadRequest,
 		},
 		{
+			name:               "retorna error para JSON inválido",
+			projectID:          "1",
+			requestBody:        "invalid json",
+			mockSetup:          func(m *mockService.MockProjectService) {},
+			expectedStatusCode: http.StatusBadRequest,
+		},
+		{
 			name:      "retorna error cuando proyecto no existe",
 			projectID: "999",
 			requestBody: UpdateProjectRequest{
