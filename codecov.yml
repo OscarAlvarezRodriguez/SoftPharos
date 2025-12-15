@@ -1,0 +1,41 @@
+# Codecov configuration
+coverage:
+  precision: 2
+  round: down
+  range: "80...100"
+
+  status:
+    project:
+      default:
+        target: 25%
+        threshold: 2%
+        if_ci_failed: error
+
+    patch:
+      default:
+        target: 50%
+        if_ci_failed: error
+
+# Archivos/directorios a ignorar en el reporte de coverage
+ignore:
+  - "Proyecto/Backend/cmd/**/*"
+  - "Proyecto/Backend/mocks/**/*"
+  - "Proyecto/Backend/main.go"
+  - "Proyecto/Backend/**/models/*.go"
+  - "Proyecto/Backend/cmd/buildingAPI/**/*"
+  - "**/*_test.go"
+
+# Comentarios en PRs
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+# Flags para separar tipos de tests
+flags:
+  unittests:
+    paths:
+      - Proyecto/Backend/internal/
+    carryforward: true

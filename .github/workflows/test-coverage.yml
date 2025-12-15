@@ -1,0 +1,90 @@
+name: Tests y Coverage
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Tests with Coverage
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24.3'
+        cache: true
+
+    - name: Download dependencies
+      run: |
+        cd Proyecto/Backend
+        go mod download
+
+    - name: Execute tests
+      run: |
+        cd Proyecto/Backend
+        go test ./... -coverprofile=coverage_full.out -covermode=atomic
+
+    - name: filter coverage
+      run: |
+        cd Proyecto/Backend
+        # Excluir directorios no relevantes
+        grep -v "cmd/" coverage_full.out | \
+        grep -v "mocks/" | \
+        grep -v "main.go" | \
+        grep -v "/models/" | \
+        grep -v "buildingAPI" > coverage.out || true
+
+        # Asegurar que el archivo no esté vacío
+        if [ ! -s coverage.out ]; then
+          cp coverage_full.out coverage.out
+        fi
+
+    - name: See coverage filtered
+      run: |
+        cd Proyecto/Backend
+        echo "Coverage total (filtrado):"
+        go tool cover -func=coverage.out | tail -1
+
+    - name: Upload coverage a Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./Proyecto/Backend/coverage.out
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Verify minimum coverage (25%)
+      run: |
+        cd Proyecto/Backend
+        COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+        echo "Coverage actual: ${COVERAGE}%"
+
+        MINIMUM=25
+        if (( $(echo "$COVERAGE < $MINIMUM" | bc -l) )); then
+          echo "❌ Coverage ${COVERAGE}% está por debajo del mínimo ${MINIMUM}%"
+          exit 1
+        else
+          echo "✅ Coverage ${COVERAGE}% cumple con el mínimo ${MINIMUM}%"
+        fi

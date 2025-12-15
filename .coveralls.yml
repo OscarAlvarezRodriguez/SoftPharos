@@ -1,0 +1,14 @@
+# Coveralls configuration
+service_name: github-actions
+
+# Directorios a excluir del coverage
+coverage_clover: Proyecto/Backend/coverage.out
+repo_token: $COVERALLS_REPO_TOKEN
+
+# Paths a ignorar
+exclude_paths:
+  - Proyecto/Backend/cmd/
+  - Proyecto/Backend/mocks/
+  - Proyecto/Backend/main.go
+  - Proyecto/Backend/internal/infra/databases/models/
+  - Proyecto/Backend/cmd/buildingAPI/
