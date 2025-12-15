@@ -20,5 +20,12 @@ func MapUrls(router *gin.Engine) {
 		// Registrar rutas de cada dominio
 		buildingAPI.RegisterProjectRoutes(v1)
 		buildingAPI.RegisterRoleRoutes(v1)
+		buildingAPI.RegisterUserRoutes(v1)
+		buildingAPI.RegisterMilestoneRoutes(v1)
+		buildingAPI.RegisterCommentRoutes(v1)
+		buildingAPI.RegisterDeliverableRoutes(v1)
+		buildingAPI.RegisterFeedbackRoutes(v1)
+		buildingAPI.RegisterProjectMemberRoutes(v1)
+		buildingAPI.RegisterReactionRoutes(v1)
 	}
 }
