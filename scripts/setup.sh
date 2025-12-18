@@ -38,9 +38,9 @@ echo "✅ PostgreSQL está listo."
 
 # --- 3. Ejecutar script SQL de inicialización (solo si la BD está vacía) ---
 
-INIT_SQL="Proyecto/Backend/cmd/bd/init.sql"
-SEED_SQL="Proyecto/Backend/cmd/bd/seed.sql"
-SEED_DEV_SQL="Proyecto/Backend/cmd/bd/seed_dev.sql"
+INIT_SQL="backend/cmd/bd/init.sql"
+SEED_SQL="backend/cmd/bd/seed.sql"
+SEED_DEV_SQL="backend/cmd/bd/seed_dev.sql"
 
 if [ -f "$INIT_SQL" ]; then
   echo "🔍 Verificando si la base de datos ya fue inicializada..."
@@ -79,7 +79,7 @@ fi
 
 # --- 4. Backend (Go) ---
 echo "🔍 Verificando dependencias del Backend..."
-cd Proyecto/Backend || exit
+cd backend || exit
 
 if ! command -v go >/dev/null 2>&1; then
   echo "❌ Go no está instalado. Instálalo antes de continuar."
@@ -93,11 +93,11 @@ else
   go mod tidy
 fi
 
-cd ../../
+cd ..
 
 # --- 5. Frontend (Vue 3) ---
 echo "🔍 Verificando dependencias del Frontend (Vue 3)..."
-cd Proyecto/Frontend || exit
+cd frontend || exit
 
 if ! command -v npm >/dev/null 2>&1; then
   echo "❌ npm no está instalado. Instálalo antes de continuar."
@@ -112,5 +112,5 @@ else
 fi
 echo "✅ Frontend verificado correctamente."
 
-cd ../../
+cd ..
 echo "✅ Setup finalizado correctamente."

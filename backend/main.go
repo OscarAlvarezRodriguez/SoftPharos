@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// Cargar variables de entorno
-	if err := godotenv.Load("../../.env"); err != nil {
+	if err := godotenv.Load("../.env"); err != nil {
 		log.Println("⚠️  No se pudo cargar .env, usando variables de entorno existentes")
 	}
 

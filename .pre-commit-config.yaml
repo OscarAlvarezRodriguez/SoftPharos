@@ -10,18 +10,18 @@ repos:
     hooks:
       - id: go-fmt
         name: go fmt
-        entry: bash -c "cd Proyecto/Backend && gofmt -l -w ."
+        entry: bash -c "cd backend && gofmt -l -w ."
         language: system
         types: [go]
 
       - id: go-vet
         name: go vet
-        entry: bash -c "cd Proyecto/Backend && go vet ./..."
+        entry: bash -c "cd backend && go vet ./..."
         language: system
         types: [go]
 
       - id: go-test
         name: go test
-        entry: bash -c "cd Proyecto/Backend && go test ./..."
+        entry: bash -c "cd backend && go test ./..."
         language: system
         pass_filenames: false

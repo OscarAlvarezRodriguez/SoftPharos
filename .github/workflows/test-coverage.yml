@@ -38,17 +38,17 @@ jobs:
 
     - name: Download dependencies
       run: |
-        cd Proyecto/Backend
+        cd backend
         go mod download
 
     - name: Execute tests
       run: |
-        cd Proyecto/Backend
+        cd backend
         go test ./... -coverprofile=coverage_full.out -covermode=atomic
 
     - name: filter coverage
       run: |
-        cd Proyecto/Backend
+        cd backend
         # Excluir directorios no relevantes
         grep -v "cmd/" coverage_full.out | \
         grep -v "mocks/" | \
@@ -63,21 +63,21 @@ jobs:
 
     - name: See coverage filtered
       run: |
-        cd Proyecto/Backend
+        cd backend
         echo "Coverage total (filtrado):"
         go tool cover -func=coverage.out | tail -1
 
     - name: Upload coverage a Codecov
       uses: codecov/codecov-action@v4
       with:
-        file: ./Proyecto/Backend/coverage.out
+        file: ./backend/coverage.out
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false
 
     - name: Verify minimum coverage (25%)
       run: |
-        cd Proyecto/Backend
+        cd backend
         COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
         echo "Coverage actual: ${COVERAGE}%"
 
