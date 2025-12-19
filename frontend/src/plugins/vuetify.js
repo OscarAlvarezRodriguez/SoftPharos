@@ -8,9 +8,10 @@ const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: localStorage.getItem('theme') || 'light',
     themes: {
       light: {
+        dark: false,
         colors: {
           primary: '#2196F3',
           secondary: '#607D8B',
@@ -24,6 +25,7 @@ const vuetify = createVuetify({
         }
       },
       dark: {
+        dark: true,
         colors: {
           primary: '#42A5F5',
           secondary: '#78909C',

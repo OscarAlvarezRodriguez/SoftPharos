@@ -46,13 +46,108 @@
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.v-application {
+  background: var(--color-background) !important;
+}
+
+.v-main {
+  background: var(--color-background) !important;
+}
+
 .gradient-text {
-  background: linear-gradient(120deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+  font-weight: 900;
 }
 
 .hero-background {
-  background-color: var(--color-background);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(66, 165, 245, 0.03), transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(144, 202, 249, 0.03), transparent 50%),
+    var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section-title {
+  color: var(--color-text);
+}
+
+.section-subtitle {
+  color: var(--color-text-secondary);
+}
+
+.feature-card {
+  background-color: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.feature-card:hover {
+  background-color: var(--color-background-soft) !important;
+  border-color: var(--color-primary) !important;
+  transform: translateY(-2px);
+}
+
+.feature-title {
+  color: var(--color-text);
+}
+
+.feature-text {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.auth-card {
+  background-color: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.auth-card-title {
+  color: var(--color-text);
+}
+
+.auth-card-text {
+  color: var(--color-text-secondary);
+}
+
+.app-footer {
+  background-color: var(--color-background) !important;
+  border-top: 1px solid var(--color-border);
+}
+
+.app-navbar {
+  background-color: var(--color-background) !important;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.footer-heading {
+  color: var(--color-text);
+}
+
+.footer-text {
+  color: var(--color-text-secondary);
+}
+
+.footer-divider {
+  border-color: var(--color-border) !important;
+}
+
+.v-btn {
+  transition: all 0.2s ease;
+}
+
+.v-card {
+  border-radius: 8px !important;
+}
+
+.v-divider {
+  border-color: var(--color-border) !important;
 }

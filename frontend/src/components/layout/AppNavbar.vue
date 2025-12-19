@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar elevation="0" style="background-color: var(--color-background); border-bottom: 1px solid var(--color-border);">
+  <v-app-bar elevation="0" class="app-navbar">
     <v-container class="d-flex align-center">
       <v-app-bar-title>
         <router-link to="/" class="d-flex align-center text-decoration-none">
