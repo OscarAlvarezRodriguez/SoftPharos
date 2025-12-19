@@ -1,12 +1,12 @@
 <template>
-  <div class="py-16" style="background-color: var(--color-background);">
+  <div class="py-12 py-md-16" style="background-color: var(--color-background-soft);">
     <v-container>
-      <v-row justify="center" class="mb-12">
-        <v-col cols="12" class="text-center">
-          <h2 class="text-h3 font-weight-bold mb-4" style="color: var(--color-text);">
+      <v-row justify="center" class="mb-10">
+        <v-col cols="12" md="10" lg="8" class="text-center">
+          <h2 class="text-h4 text-md-h3 font-weight-bold mb-4" style="color: var(--color-text);">
             ¿Qué hace especial a SoftPharos?
           </h2>
-          <p class="text-h6" style="color: var(--color-text-secondary);">
+          <p class="text-body-1" style="color: var(--color-text-secondary);">
             Una plataforma diseñada específicamente para el aprendizaje iterativo
           </p>
         </v-col>
@@ -21,16 +21,16 @@
           lg="4"
         >
           <v-card
-            elevation="2"
-            class="h-100"
-            style="background-color: var(--color-background-soft); border: 1px solid var(--color-border);"
+            elevation="0"
+            class="h-100 pa-2"
+            style="background-color: var(--color-background); border: 1px solid var(--color-border);"
           >
             <v-card-text class="pa-6">
-              <div class="text-h2 mb-4">{{ feature.icon }}</div>
-              <h3 class="text-h5 font-weight-bold mb-3" style="color: var(--color-text);">
+              <div class="text-h3 mb-4">{{ feature.icon }}</div>
+              <h3 class="text-h6 font-weight-bold mb-3" style="color: var(--color-text);">
                 {{ feature.title }}
               </h3>
-              <p style="color: var(--color-text-secondary);">
+              <p class="text-body-2" style="color: var(--color-text-secondary); line-height: 1.6;">
                 {{ feature.description }}
               </p>
             </v-card-text>
