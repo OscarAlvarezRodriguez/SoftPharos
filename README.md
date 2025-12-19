@@ -43,19 +43,21 @@ bash scripts/setup.sh
 
 ### Desarrollo
 
+Abre **dos terminales**:
+
 ```bash
 # Terminal 1 - Backend
-cd backend
-go run main.go
+make dev-backend
 
 # Terminal 2 - Frontend
-cd frontend
-npm run dev
+make dev-frontend
 ```
 
 **URLs:**
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080
+
+> 💡 Tip: Ejecuta `make dev` para ver estas instrucciones
 
 ## 📁 Estructura
 
@@ -72,13 +74,16 @@ SoftPharos/
 
 ```bash
 make help           # Ver todos los comandos disponibles
-make dev-backend    # Iniciar backend (puerto 8080)
-make dev-frontend   # Iniciar frontend (puerto 5173)
+make dev            # Ver instrucciones de desarrollo
+make dev-backend    # Iniciar backend (Terminal 1)
+make dev-frontend   # Iniciar frontend (Terminal 2)
 make test           # Ejecutar todos los tests
 make lint           # Ejecutar linters
-make build          # Compilar proyecto completo
 make db-reset       # Reiniciar base de datos
+make clean          # Limpiar archivos temporales
 ```
+
+> **Nota:** `make build` existe pero es opcional, solo para compilar producción
 
 ## 📚 Documentación adicional
 

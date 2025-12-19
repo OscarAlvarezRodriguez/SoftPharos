@@ -106,6 +106,7 @@ fi
 
 if [ -d "node_modules" ]; then
   echo "✅ Dependencias ya instaladas. Saltando npm install."
+  echo "💡 Si hay problemas, ejecuta 'make clean' primero"
 else
   echo "🔍 Instalando dependencias..."
   npm install
