@@ -1,47 +1,43 @@
-.PHONY: help setup dev dev-backend dev-frontend test clean db-reset
+.PHONY: help setup dev-backend dev-frontend test lint build clean db-reset
 
 help: ## Muestra esta ayuda
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-setup: ## Configuración inicial completa
-	bash scripts/setup.sh
+setup: ## Configuración inicial completa del proyecto
+	@bash scripts/setup.sh
 
-dev-backend: ## Inicia el backend en modo desarrollo
-	cd backend && go run main.go
+dev-backend: ## Inicia el backend en modo desarrollo (puerto 8080)
+	@cd backend && go run main.go
 
-dev-frontend: ## Inicia el frontend en modo desarrollo
-	cd frontend && npm run dev
+dev-frontend: ## Inicia el frontend en modo desarrollo (puerto 5173)
+	@cd frontend && npm run dev
 
-dev: ## Inicia backend y frontend (requiere 2 terminales)
-	@echo "⚠️  Ejecuta en terminales separadas:"
-	@echo "   Terminal 1: make dev-backend"
-	@echo "   Terminal 2: make dev-frontend"
+test: ## Ejecuta todos los tests (backend + frontend)
+	@echo "🧪 Ejecutando tests del backend..."
+	@cd backend && go test ./...
+	@echo "🧪 Ejecutando tests del frontend..."
+	@cd frontend && npm run test:unit
 
-test-backend: ## Ejecuta tests del backend
-	cd backend && go test ./...
+lint: ## Ejecuta linters en todo el proyecto
+	@echo "🔍 Ejecutando linters del backend..."
+	@cd backend && go fmt ./...
+	@echo "🔍 Ejecutando linters del frontend..."
+	@cd frontend && npm run lint
 
-test-frontend: ## Ejecuta tests del frontend
-	cd frontend && npm run test:unit
+build: ## Compila todo el proyecto (backend + frontend)
+	@echo "🔨 Compilando backend..."
+	@cd backend && go build -o ../bin/softpharos main.go
+	@echo "🔨 Compilando frontend..."
+	@cd frontend && npm run build
+	@echo "✅ Build completado: bin/softpharos (backend) y frontend/dist/ (frontend)"
 
-test: test-backend test-frontend ## Ejecuta todos los tests
+db-reset: ## Reinicia la base de datos desde cero
+	@bash scripts/re_init_bd.sh
 
-db-reset: ## Reinicia la base de datos
-	bash scripts/re_init_bd.sh
-
-clean: ## Limpia archivos temporales
-	cd backend && go clean
-	cd frontend && rm -rf dist node_modules/.vite
-
-lint-backend: ## Ejecuta linter en backend
-	cd backend && go fmt ./...
-
-lint-frontend: ## Ejecuta linter en frontend
-	cd frontend && npm run lint
-
-build-backend: ## Compila el backend
-	cd backend && go build -o ../bin/softpharos main.go
-
-build-frontend: ## Compila el frontend para producción
-	cd frontend && npm run build
-
-build: build-backend build-frontend ## Compila todo el proyecto
+clean: ## Limpia archivos generados y temporales
+	@echo "🧹 Limpiando archivos temporales..."
+	@cd backend && go clean
+	@rm -rf bin/
+	@rm -rf frontend/dist/
+	@rm -rf frontend/node_modules/.vite
+	@echo "✅ Limpieza completada"

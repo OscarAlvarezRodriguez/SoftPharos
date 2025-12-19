@@ -70,20 +70,14 @@ SoftPharos/
 
 ## 🛠️ Comandos útiles
 
-Con Makefile:
 ```bash
-make help              # Ver todos los comandos
-make dev-backend       # Iniciar backend
-make dev-frontend      # Iniciar frontend
-make test              # Ejecutar todos los tests
-make db-reset          # Reiniciar base de datos
-```
-
-Comandos directos:
-```bash
-bash scripts/re_init_bd.sh      # Reiniciar base de datos
-cd backend && go test ./...      # Tests backend
-cd frontend && npm run test:unit # Tests frontend
+make help           # Ver todos los comandos disponibles
+make dev-backend    # Iniciar backend (puerto 8080)
+make dev-frontend   # Iniciar frontend (puerto 5173)
+make test           # Ejecutar todos los tests
+make lint           # Ejecutar linters
+make build          # Compilar proyecto completo
+make db-reset       # Reiniciar base de datos
 ```
 
 ## 📚 Documentación adicional

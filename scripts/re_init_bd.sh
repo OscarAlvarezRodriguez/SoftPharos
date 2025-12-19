@@ -18,6 +18,8 @@ echo "🧽 Limpiando volúmenes huérfanos..."
 docker volume prune -f
 
 echo "🧰 Reconstruyendo entorno limpio..."
-sh setup.sh
+# Volver al directorio raíz y ejecutar setup.sh
+cd "$(dirname "$0")/.."
+bash scripts/setup.sh
 
 echo "✅ Base de datos PostgreSQL reiniciada y contenedor en ejecución."
