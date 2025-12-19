@@ -7,7 +7,7 @@
             Iniciar Sesión
           </v-card-title>
 
-          <v-card-text class="text-center">
+          <v-card-text class="text-center pa-6">
             <p class="text-body-1 mb-4">
               Página en construcción...
             </p>

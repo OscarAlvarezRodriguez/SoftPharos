@@ -33,16 +33,27 @@ npm run lint
 
 ```
 src/
-├── assets/          # Recursos estáticos
-├── components/      # Componentes reutilizables
-├── plugins/         # Plugins de Vue
-│   └── vuetify.js   # Configuración de Vuetify
-├── router/          # Configuración de rutas
-├── stores/          # Estado global (Pinia)
-├── views/           # Páginas/Vistas
+├── assets/
+│   └── styles/
+│       └── theme.css       # CSS global de temas
+├── components/
+│   ├── layout/
+│   │   ├── AppNavbar.vue
+│   │   └── AppFooter.vue
+│   └── home/
+│       ├── HomeHero.vue
+│       ├── HomeStats.vue
+│       └── HomeFeatures.vue
+├── views/
 │   ├── HomeView.vue
 │   ├── LoginView.vue
 │   └── RegisterView.vue
+├── stores/
+│   └── theme.js            # Store de temas (Pinia)
+├── plugins/
+│   └── vuetify.js          # Config Vuetify
+├── router/
+│   └── index.js
 ├── App.vue
 └── main.js
 ```

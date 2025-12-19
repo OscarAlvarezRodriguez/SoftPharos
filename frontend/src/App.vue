@@ -1,8 +1,24 @@
 <template>
   <v-app>
-    <RouterView />
+    <AppNavbar />
+
+    <v-main>
+      <RouterView />
+    </v-main>
+
+    <AppFooter />
   </v-app>
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { useThemeStore } from '@/stores/theme'
+import AppNavbar from '@/components/layout/AppNavbar.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
+
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  themeStore.initTheme()
+})
 </script>
