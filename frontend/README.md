@@ -1,14 +1,11 @@
 # Frontend - SoftPharos
 
-Aplicación web desarrollada con Vue 3, Vite y Pinia.
+Aplicación web desarrollada con Vue 3, Vite, Vuetify 3 y Pinia.
 
-## 🛠️ Stack tecnológico
+## 📋 Requisitos
 
-- **Vue 3**: Framework progresivo
-- **Vite**: Build tool y dev server
-- **Pinia**: State management
-- **Vue Router**: Enrutamiento
-- **Vitest**: Testing
+- Node.js 20.19.0+ o 22.12.0+
+- npm 9+
 
 ## 🚀 Comandos
 
@@ -36,11 +33,16 @@ npm run lint
 
 ```
 src/
-├── assets/          # Estilos y recursos
+├── assets/          # Recursos estáticos
 ├── components/      # Componentes reutilizables
+├── plugins/         # Plugins de Vue
+│   └── vuetify.js   # Configuración de Vuetify
 ├── router/          # Configuración de rutas
 ├── stores/          # Estado global (Pinia)
 ├── views/           # Páginas/Vistas
+│   ├── HomeView.vue
+│   ├── LoginView.vue
+│   └── RegisterView.vue
 ├── App.vue
 └── main.js
 ```
@@ -48,8 +50,3 @@ src/
 ## 🔗 API Backend
 
 Por defecto conecta a `http://localhost:8080`
-
-## 📋 Requisitos
-
-- Node.js 20.19.0+ o 22.12.0+
-- npm 9+
