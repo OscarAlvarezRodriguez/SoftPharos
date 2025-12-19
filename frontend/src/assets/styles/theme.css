@@ -119,12 +119,12 @@ body {
 }
 
 .app-footer {
-  background-color: var(--color-background) !important;
+  background-color: var(--color-background-soft) !important;
   border-top: 1px solid var(--color-border);
 }
 
 .app-navbar {
-  background-color: var(--color-background) !important;
+  background-color: var(--color-background-soft) !important;
   border-bottom: 1px solid var(--color-border);
 }
 

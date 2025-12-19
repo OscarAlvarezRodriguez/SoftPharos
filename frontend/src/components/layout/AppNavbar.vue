@@ -1,6 +1,5 @@
 <template>
   <v-app-bar elevation="0" class="app-navbar">
-    <v-container class="d-flex align-center">
       <v-app-bar-title>
         <router-link to="/" class="d-flex align-center text-decoration-none">
           <v-avatar size="36" class="mr-2">
@@ -30,7 +29,6 @@
       <v-btn to="/register" color="primary" elevation="0" class="ml-2">
         Registrarse
       </v-btn>
-    </v-container>
   </v-app-bar>
 </template>
 
