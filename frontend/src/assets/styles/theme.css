@@ -110,17 +110,13 @@ body {
   border: 1px solid var(--color-border) !important;
 }
 
-.auth-card-title {
-  color: var(--color-text);
-}
-
-.auth-card-text {
-  color: var(--color-text-secondary);
-}
-
 .app-footer {
-  background-color: var(--color-background-soft) !important;
+  background-color: var(--color-background-soft);
   border-top: 1px solid var(--color-border);
+
+  max-height: 220px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .app-navbar {
@@ -150,4 +146,20 @@ body {
 
 .v-divider {
   border-color: var(--color-border) !important;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1 0 auto;
 }
