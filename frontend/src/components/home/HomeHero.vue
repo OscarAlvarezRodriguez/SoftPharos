@@ -15,21 +15,21 @@
 
           <div class="d-flex flex-column flex-sm-row justify-center ga-3 mb-8">
             <v-btn
-              to="/register"
-              color="primary"
-              size="large"
-              elevation="0"
-              prepend-icon="mdi-account-plus"
+                to="/register"
+                color="primary"
+                size="large"
+                elevation="0"
+                prepend-icon="mdi-account-plus"
             >
               Comenzar Ahora
             </v-btn>
 
             <v-btn
-              to="/login"
-              variant="outlined"
-              color="primary"
-              size="large"
-              elevation="0"
+                to="/login"
+                variant="outlined"
+                color="primary"
+                size="large"
+                elevation="0"
             >
               Ya tengo cuenta
             </v-btn>
@@ -37,8 +37,9 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container>
-      <v-row justify="center" class="mb-10">
+
+    <v-container class="py-10">
+      <v-row justify="center" class="mb-8">
         <v-col cols="12" md="10" lg="8" class="text-center">
           <h2 class="text-h4 text-md-h3 font-weight-bold mb-4 section-title">
             ¿Qué hace especial a SoftPharos?
@@ -49,28 +50,62 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col
-            v-for="feature in features"
-            :key="feature.title"
-            cols="12"
-            md="6"
-            lg="4"
-        >
-          <v-card
-              elevation="0"
-              class="feature-card h-100 pa-2"
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <v-carousel
+              v-model="currentSlide"
+              hide-delimiter-background
+              height="auto"
+              :show-arrows="false"
+              continuous
+              cycle
+              :interval="7000"
           >
-            <v-card-text class="pa-6">
-              <div class="text-h3 mb-4">{{ feature.icon }}</div>
-              <h3 class="text-h6 font-weight-bold mb-3 feature-title">
-                {{ feature.title }}
-              </h3>
-              <p class="text-body-2 feature-text">
-                {{ feature.description }}
-              </p>
-            </v-card-text>
-          </v-card>
+            <v-carousel-item
+                v-for="(slideFeatures, index) in featureSlides"
+                :key="index"
+            >
+              <v-row>
+                <v-col
+                    v-for="feature in slideFeatures"
+                    :key="feature.title"
+                    cols="12"
+                    sm="6"
+                    lg="6"
+                >
+                  <v-card
+                      elevation="0"
+                      class="feature-card h-100 pa-3"
+                  >
+                    <v-card-text class="pa-5">
+                      <div class="text-h3 mb-4 align-center">{{ feature.icon }}</div>
+                      <h3 class="text-h6 font-weight-bold mb-3 feature-title">
+                        {{ feature.title }}
+                      </h3>
+                      <p class="text-body-2 feature-text">
+                        {{ feature.description }}
+                      </p>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-carousel-item>
+          </v-carousel>
+
+          <div class="d-flex justify-center mt-4 ga-2">
+            <v-btn
+                icon="mdi-chevron-left"
+                size="small"
+                variant="text"
+                @click="prevSlide"
+            />
+            <v-btn
+                icon="mdi-chevron-right"
+                size="small"
+                variant="text"
+                @click="nextSlide"
+            />
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -78,11 +113,13 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue'
+
 const features = [
   {
     icon: '📊',
     title: 'Gestión de Proyectos',
-    description: 'Organiza y documenta tus proyectos de software con milestones y entregas semanales'
+    description: 'Organiza y documenta el proyecto de software con hitos y entregas'
   },
   {
     icon: '💬',
@@ -92,7 +129,7 @@ const features = [
   {
     icon: '✍️',
     title: 'Feedback Docente',
-    description: 'Recibe retroalimentación continua de tus profesores para mejorar tu proceso'
+    description: 'Recibe retroalimentación continua del profesores para mejorar el proceso'
   },
   {
     icon: '📈',
@@ -107,9 +144,31 @@ const features = [
   {
     icon: '🎯',
     title: 'Objetivos Claros',
-    description: 'Define y alcanza metas concretas en cada milestone de tu proyecto'
+    description: 'Define y alcanza metas concretas en cada hito de tu proyecto'
   }
 ]
+
+const CARDS_PER_SLIDE = 2 // número de cards por “rollito” en desktop
+
+const featureSlides = computed(() => {
+  const slides = []
+  for (let i = 0; i < features.length; i += CARDS_PER_SLIDE) {
+    slides.push(features.slice(i, i + CARDS_PER_SLIDE))
+  }
+  return slides
+})
+
+const currentSlide = ref(0)
+
+const prevSlide = () => {
+  currentSlide.value =
+      (currentSlide.value - 1 + featureSlides.value.length) % featureSlides.value.length
+}
+
+const nextSlide = () => {
+  currentSlide.value =
+      (currentSlide.value + 1) % featureSlides.value.length
+}
 </script>
 
 <style scoped>
