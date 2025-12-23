@@ -229,11 +229,11 @@ func TestCreate(t *testing.T) {
 	}{
 		{
 			name: "crea usuario exitosamente",
-			user: &user.User{Name: &name, Email: "new@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{Name: &name, Email: "new@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(mock sqlmock.Sqlmock) {
 				mock.ExpectBegin()
 				mock.ExpectQuery(regexp.QuoteMeta(`INSERT INTO "user"`)).
-					WithArgs(name, "new@example.com", "hash", 1, sqlmock.AnyArg()).
+					WithArgs(name, "new@example.com", "google-123", 1, sqlmock.AnyArg(), sqlmock.AnyArg()).
 					WillReturnRows(sqlmock.NewRows([]string{"id", "created_at"}).
 						AddRow(1, time.Now()))
 				mock.ExpectCommit()
@@ -242,11 +242,11 @@ func TestCreate(t *testing.T) {
 		},
 		{
 			name: "retorna error cuando create falla",
-			user: &user.User{Name: &name, Email: "new@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{Name: &name, Email: "new@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(mock sqlmock.Sqlmock) {
 				mock.ExpectBegin()
 				mock.ExpectQuery(regexp.QuoteMeta(`INSERT INTO "user"`)).
-					WithArgs(name, "new@example.com", "hash", 1, sqlmock.AnyArg()).
+					WithArgs(name, "new@example.com", "google-123", 1, sqlmock.AnyArg(), sqlmock.AnyArg()).
 					WillReturnError(errors.New("database error"))
 				mock.ExpectRollback()
 			},
@@ -289,17 +289,17 @@ func TestUpdate(t *testing.T) {
 		{
 			name: "actualiza usuario exitosamente",
 			user: &user.User{
-				ID:        1,
-				Name:      &name,
-				Email:     "updated@example.com",
-				Password:  "hash",
-				RoleID:    1,
-				CreatedAt: time.Now(),
+				ID:         1,
+				Name:       &name,
+				Email:      "updated@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				CreatedAt:  time.Now(),
 			},
 			mockSetup: func(mock sqlmock.Sqlmock) {
 				mock.ExpectBegin()
 				mock.ExpectExec(regexp.QuoteMeta(`UPDATE "user" SET`)).
-					WithArgs(name, "updated@example.com", "hash", 1, sqlmock.AnyArg(), 1).
+					WithArgs(name, "updated@example.com", "google-123", 1, sqlmock.AnyArg(), sqlmock.AnyArg(), 1).
 					WillReturnResult(sqlmock.NewResult(1, 1))
 				mock.ExpectCommit()
 			},
@@ -308,16 +308,16 @@ func TestUpdate(t *testing.T) {
 		{
 			name: "retorna error cuando update falla",
 			user: &user.User{
-				ID:       1,
-				Name:     &name,
-				Email:    "updated@example.com",
-				Password: "hash",
-				RoleID:   1,
+				ID:         1,
+				Name:       &name,
+				Email:      "updated@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
 			},
 			mockSetup: func(mock sqlmock.Sqlmock) {
 				mock.ExpectBegin()
 				mock.ExpectExec(regexp.QuoteMeta(`UPDATE "user" SET`)).
-					WithArgs(name, "updated@example.com", "hash", 1, sqlmock.AnyArg(), 1).
+					WithArgs(name, "updated@example.com", "google-123", 1, sqlmock.AnyArg(), sqlmock.AnyArg(), 1).
 					WillReturnError(errors.New("database error"))
 				mock.ExpectRollback()
 			},

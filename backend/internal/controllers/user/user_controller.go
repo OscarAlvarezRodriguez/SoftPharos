@@ -102,9 +102,6 @@ func (c *Controller) UpdateUser(ctx *gin.Context) {
 	if req.Name != nil {
 		existingUser.Name = req.Name
 	}
-	if req.Password != nil {
-		existingUser.Password = *req.Password
-	}
 	if req.RoleID != nil {
 		existingUser.RoleID = *req.RoleID
 	}

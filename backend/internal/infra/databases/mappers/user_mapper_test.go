@@ -12,6 +12,7 @@ import (
 
 func TestUserToDomain(t *testing.T) {
 	name := "John Doe"
+	picture := "https://example.com/pic.jpg"
 	roleName := "Admin"
 	roleDesc := "Administrator"
 	now := time.Now()
@@ -24,11 +25,12 @@ func TestUserToDomain(t *testing.T) {
 		{
 			name: "convierte modelo válido a dominio",
 			input: &models.UserModel{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				PictureURL: &picture,
 				Role: &models.RoleModel{
 					ID:          1,
 					Name:        roleName,
@@ -37,11 +39,12 @@ func TestUserToDomain(t *testing.T) {
 				CreatedAt: now,
 			},
 			expected: &user.User{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				PictureURL: &picture,
 				Role: &role.Role{
 					ID:          1,
 					Name:        roleName,
@@ -58,20 +61,20 @@ func TestUserToDomain(t *testing.T) {
 		{
 			name: "maneja role nil",
 			input: &models.UserModel{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
-				Role:     nil,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				Role:       nil,
 			},
 			expected: &user.User{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
-				Role:     nil,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				Role:       nil,
 			},
 		},
 	}
@@ -86,6 +89,7 @@ func TestUserToDomain(t *testing.T) {
 
 func TestUserToModel(t *testing.T) {
 	name := "John Doe"
+	picture := "https://example.com/pic.jpg"
 	roleName := "Admin"
 	roleDesc := "Administrator"
 	now := time.Now()
@@ -98,11 +102,12 @@ func TestUserToModel(t *testing.T) {
 		{
 			name: "convierte dominio válido a modelo",
 			input: &user.User{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				PictureURL: &picture,
 				Role: &role.Role{
 					ID:          1,
 					Name:        roleName,
@@ -111,11 +116,12 @@ func TestUserToModel(t *testing.T) {
 				CreatedAt: now,
 			},
 			expected: &models.UserModel{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				PictureURL: &picture,
 				Role: &models.RoleModel{
 					ID:          1,
 					Name:        roleName,
@@ -132,20 +138,20 @@ func TestUserToModel(t *testing.T) {
 		{
 			name: "maneja role nil",
 			input: &user.User{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
-				Role:     nil,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				Role:       nil,
 			},
 			expected: &models.UserModel{
-				ID:       1,
-				Name:     &name,
-				Email:    "john@example.com",
-				Password: "hash",
-				RoleID:   1,
-				Role:     nil,
+				ID:         1,
+				Name:       &name,
+				Email:      "john@example.com",
+				ProviderID: "google-123",
+				RoleID:     1,
+				Role:       nil,
 			},
 		},
 	}
@@ -170,12 +176,12 @@ func TestUserListToDomain(t *testing.T) {
 		{
 			name: "convierte lista de modelos a dominios",
 			input: []models.UserModel{
-				{ID: 1, Name: &name1, Email: "user1@example.com", Password: "hash1", RoleID: 1},
-				{ID: 2, Name: &name2, Email: "user2@example.com", Password: "hash2", RoleID: 2},
+				{ID: 1, Name: &name1, Email: "user1@example.com", ProviderID: "google-001", RoleID: 1},
+				{ID: 2, Name: &name2, Email: "user2@example.com", ProviderID: "google-002", RoleID: 2},
 			},
 			expected: []user.User{
-				{ID: 1, Name: &name1, Email: "user1@example.com", Password: "hash1", RoleID: 1},
-				{ID: 2, Name: &name2, Email: "user2@example.com", Password: "hash2", RoleID: 2},
+				{ID: 1, Name: &name1, Email: "user1@example.com", ProviderID: "google-001", RoleID: 1},
+				{ID: 2, Name: &name2, Email: "user2@example.com", ProviderID: "google-002", RoleID: 2},
 			},
 		},
 		{

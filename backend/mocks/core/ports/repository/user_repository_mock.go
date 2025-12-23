@@ -114,6 +114,21 @@ func (mr *MockUserRepositoryMockRecorder) GetByID(ctx, id any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockUserRepository)(nil).GetByID), ctx, id)
 }
 
+// GetByProviderID mocks base method.
+func (m *MockUserRepository) GetByProviderID(ctx context.Context, providerID string) (*user.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByProviderID", ctx, providerID)
+	ret0, _ := ret[0].(*user.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByProviderID indicates an expected call of GetByProviderID.
+func (mr *MockUserRepositoryMockRecorder) GetByProviderID(ctx, providerID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByProviderID", reflect.TypeOf((*MockUserRepository)(nil).GetByProviderID), ctx, providerID)
+}
+
 // Update mocks base method.
 func (m *MockUserRepository) Update(ctx context.Context, arg1 *user.User) error {
 	m.ctrl.T.Helper()

@@ -11,13 +11,14 @@ func UserToDomain(model *models.UserModel) *user.User {
 	}
 
 	return &user.User{
-		ID:        model.ID,
-		Name:      model.Name,
-		Email:     model.Email,
-		Password:  model.Password,
-		RoleID:    model.RoleID,
-		Role:      RoleToDomain(model.Role),
-		CreatedAt: model.CreatedAt,
+		ID:         model.ID,
+		Name:       model.Name,
+		Email:      model.Email,
+		ProviderID: model.ProviderID,
+		RoleID:     model.RoleID,
+		Role:       RoleToDomain(model.Role),
+		PictureURL: model.PictureURL,
+		CreatedAt:  model.CreatedAt,
 	}
 }
 
@@ -27,13 +28,14 @@ func UserToModel(domain *user.User) *models.UserModel {
 	}
 
 	return &models.UserModel{
-		ID:        domain.ID,
-		Name:      domain.Name,
-		Email:     domain.Email,
-		Password:  domain.Password,
-		RoleID:    domain.RoleID,
-		Role:      RoleToModel(domain.Role),
-		CreatedAt: domain.CreatedAt,
+		ID:         domain.ID,
+		Name:       domain.Name,
+		Email:      domain.Email,
+		ProviderID: domain.ProviderID,
+		RoleID:     domain.RoleID,
+		Role:       RoleToModel(domain.Role),
+		PictureURL: domain.PictureURL,
+		CreatedAt:  domain.CreatedAt,
 	}
 }
 

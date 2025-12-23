@@ -3,27 +3,29 @@
 -- ============================================
 -- Este script contiene datos de prueba para desarrollo local.
 -- NO debe ejecutarse en producción.
+-- NOTA: La autenticación es exclusivamente mediante Google OAuth.
+-- Estos usuarios usan provider_id ficticios para testing.
 
 -- ============================================
 -- 1. USUARIOS DE PRUEBA
 -- ============================================
-INSERT INTO "user" ("name", "email", "password", "role_id", "created_at")
+INSERT INTO "user" ("name", "email", "provider_id", "role_id", "picture_url", "created_at")
 VALUES
   -- Profesores
-  ('Dr. Juan Pérez', 'juan.perez@university.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'professor'), NOW()),
-  ('Dra. María González', 'maria.gonzalez@university.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'professor'), NOW()),
+  ('Dr. Juan Pérez', 'juan.perez@university.edu', 'google-oauth-prof-001',
+   (SELECT id FROM "role" WHERE name = 'professor'), 'https://via.placeholder.com/150', NOW()),
+  ('Dra. María González', 'maria.gonzalez@university.edu', 'google-oauth-prof-002',
+   (SELECT id FROM "role" WHERE name = 'professor'), 'https://via.placeholder.com/150', NOW()),
 
   -- Estudiantes
-  ('Carlos Rodríguez', 'carlos.rodriguez@student.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'student'), NOW()),
-  ('Ana Martínez', 'ana.martinez@student.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'student'), NOW()),
-  ('Luis Fernández', 'luis.fernandez@student.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'student'), NOW()),
-  ('Sofia López', 'sofia.lopez@student.edu', 'password123',
-   (SELECT id FROM "role" WHERE name = 'student'), NOW())
+  ('Carlos Rodríguez', 'carlos.rodriguez@student.edu', 'google-oauth-student-001',
+   (SELECT id FROM "role" WHERE name = 'student'), 'https://via.placeholder.com/150', NOW()),
+  ('Ana Martínez', 'ana.martinez@student.edu', 'google-oauth-student-002',
+   (SELECT id FROM "role" WHERE name = 'student'), 'https://via.placeholder.com/150', NOW()),
+  ('Luis Fernández', 'luis.fernandez@student.edu', 'google-oauth-student-003',
+   (SELECT id FROM "role" WHERE name = 'student'), 'https://via.placeholder.com/150', NOW()),
+  ('Sofia López', 'sofia.lopez@student.edu', 'google-oauth-student-004',
+   (SELECT id FROM "role" WHERE name = 'student'), 'https://via.placeholder.com/150', NOW())
 ON CONFLICT ("email") DO NOTHING;
 
 -- ============================================

@@ -47,6 +47,16 @@ func (r *Repository) GetByEmail(ctx context.Context, email string) (*user.User, 
 	return mappers.UserToDomain(&userModel), nil
 }
 
+func (r *Repository) GetByProviderID(ctx context.Context, providerID string) (*user.User, error) {
+	var userModel models.UserModel
+	result := r.client.DB.WithContext(ctx).Preload("Role").Where("provider_id = ?", providerID).First(&userModel)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return mappers.UserToDomain(&userModel), nil
+}
+
 func (r *Repository) Create(ctx context.Context, domainUser *user.User) error {
 	userModel := mappers.UserToModel(domainUser)
 	result := r.client.DB.WithContext(ctx).Create(userModel)

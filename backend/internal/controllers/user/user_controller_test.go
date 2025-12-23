@@ -215,10 +215,10 @@ func TestCreateUser(t *testing.T) {
 		{
 			name: "crea usuario exitosamente",
 			requestBody: CreateUserRequest{
-				Name:     &name,
-				Email:    "newuser@test.com",
-				Password: "password123",
-				RoleID:   1,
+				Name:       &name,
+				Email:      "newuser@test.com",
+				ProviderID: "google-123",
+				RoleID:     1,
 			},
 			mockSetup: func(m *mockService.MockUserService) {
 				m.EXPECT().
@@ -236,10 +236,10 @@ func TestCreateUser(t *testing.T) {
 		{
 			name: "retorna error cuando el service falla",
 			requestBody: CreateUserRequest{
-				Name:     &name,
-				Email:    "newuser@test.com",
-				Password: "password123",
-				RoleID:   1,
+				Name:       &name,
+				Email:      "newuser@test.com",
+				ProviderID: "google-123",
+				RoleID:     1,
 			},
 			mockSetup: func(m *mockService.MockUserService) {
 				m.EXPECT().
@@ -301,12 +301,12 @@ func TestUpdateUser(t *testing.T) {
 				m.EXPECT().
 					GetUserByID(gomock.Any(), 1).
 					Return(&user.User{
-						ID:        1,
-						Name:      &name,
-						Email:     "test@test.com",
-						Password:  "password",
-						RoleID:    1,
-						CreatedAt: now,
+						ID:         1,
+						Name:       &name,
+						Email:      "test@test.com",
+						ProviderID: "google-123",
+						RoleID:     1,
+						CreatedAt:  now,
 					}, nil)
 				m.EXPECT().
 					UpdateUser(gomock.Any(), gomock.Any()).
@@ -344,12 +344,12 @@ func TestUpdateUser(t *testing.T) {
 				m.EXPECT().
 					GetUserByID(gomock.Any(), 1).
 					Return(&user.User{
-						ID:        1,
-						Name:      &name,
-						Email:     "test@test.com",
-						Password:  "password",
-						RoleID:    1,
-						CreatedAt: now,
+						ID:         1,
+						Name:       &name,
+						Email:      "test@test.com",
+						ProviderID: "google-123",
+						RoleID:     1,
+						CreatedAt:  now,
 					}, nil)
 				m.EXPECT().
 					UpdateUser(gomock.Any(), gomock.Any()).

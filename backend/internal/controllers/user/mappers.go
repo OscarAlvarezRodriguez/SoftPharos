@@ -7,10 +7,11 @@ import (
 
 func ToUserDomain(req *CreateUserRequest) *user.User {
 	return &user.User{
-		Name:     req.Name,
-		Email:    req.Email,
-		Password: req.Password,
-		RoleID:   req.RoleID,
+		Name:       req.Name,
+		Email:      req.Email,
+		ProviderID: req.ProviderID,
+		RoleID:     req.RoleID,
+		PictureURL: req.PictureURL,
 	}
 }
 
@@ -20,11 +21,12 @@ func ToUserResponse(usr *user.User) *UserResponse {
 	}
 
 	response := &UserResponse{
-		ID:        usr.ID,
-		Name:      usr.Name,
-		Email:     usr.Email,
-		RoleID:    usr.RoleID,
-		CreatedAt: usr.CreatedAt,
+		ID:         usr.ID,
+		Name:       usr.Name,
+		Email:      usr.Email,
+		RoleID:     usr.RoleID,
+		PictureURL: usr.PictureURL,
+		CreatedAt:  usr.CreatedAt,
 	}
 
 	if usr.Role != nil {

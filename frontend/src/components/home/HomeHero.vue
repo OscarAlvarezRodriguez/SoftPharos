@@ -15,23 +15,12 @@
 
           <div class="d-flex flex-column flex-sm-row justify-center ga-3 mb-8">
             <v-btn
-                to="/register"
-                color="primary"
-                size="large"
-                elevation="0"
-                prepend-icon="mdi-account-plus"
-            >
-              Comenzar Ahora
-            </v-btn>
-
-            <v-btn
                 to="/login"
-                variant="outlined"
                 color="primary"
                 size="large"
                 elevation="0"
             >
-              Ya tengo cuenta
+              Iniciar sesión
             </v-btn>
           </div>
         </v-col>

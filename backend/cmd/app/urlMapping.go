@@ -17,6 +17,9 @@ func MapUrls(router *gin.Engine) {
 			})
 		})
 
+		// Registrar rutas de autenticación (sin middleware)
+		buildingAPI.RegisterAuthRoutes(v1)
+
 		// Registrar rutas de cada dominio
 		buildingAPI.RegisterProjectRoutes(v1)
 		buildingAPI.RegisterRoleRoutes(v1)

@@ -205,7 +205,7 @@ func TestCreateUser(t *testing.T) {
 	}{
 		{
 			name: "crea usuario exitosamente",
-			user: &user.User{Name: &name, Email: "new@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{Name: &name, Email: "new@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(m *mockRepo.MockUserRepository) {
 				m.EXPECT().
 					Create(gomock.Any(), gomock.Any()).
@@ -215,7 +215,7 @@ func TestCreateUser(t *testing.T) {
 		},
 		{
 			name: "retorna error cuando el repositorio falla",
-			user: &user.User{Name: &name, Email: "new@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{Name: &name, Email: "new@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(m *mockRepo.MockUserRepository) {
 				m.EXPECT().
 					Create(gomock.Any(), gomock.Any()).
@@ -258,7 +258,7 @@ func TestUpdateUser(t *testing.T) {
 	}{
 		{
 			name: "actualiza usuario exitosamente",
-			user: &user.User{ID: 1, Name: &name, Email: "updated@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{ID: 1, Name: &name, Email: "updated@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(m *mockRepo.MockUserRepository) {
 				m.EXPECT().
 					Update(gomock.Any(), gomock.Any()).
@@ -268,7 +268,7 @@ func TestUpdateUser(t *testing.T) {
 		},
 		{
 			name: "retorna error cuando el repositorio falla",
-			user: &user.User{ID: 1, Name: &name, Email: "updated@example.com", Password: "hash", RoleID: 1},
+			user: &user.User{ID: 1, Name: &name, Email: "updated@example.com", ProviderID: "google-123", RoleID: 1},
 			mockSetup: func(m *mockRepo.MockUserRepository) {
 				m.EXPECT().
 					Update(gomock.Any(), gomock.Any()).

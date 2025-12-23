@@ -26,9 +26,6 @@
         Iniciar Sesión
       </v-btn>
 
-      <v-btn to="/register" color="primary" elevation="0" class="ml-2">
-        Registrarse
-      </v-btn>
   </v-app-bar>
 </template>
 

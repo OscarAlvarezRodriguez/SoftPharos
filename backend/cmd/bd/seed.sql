@@ -5,7 +5,7 @@
 -- Se ejecuta después de init.sql y es idempotente (puede ejecutarse múltiples veces).
 
 -- ============================================
--- 1. ROLES (Datos esenciales)
+-- 1. ROLES
 -- ============================================
 INSERT INTO "role" ("name", "description", "created_at")
 VALUES
@@ -17,13 +17,14 @@ ON CONFLICT ("name") DO NOTHING;
 -- ============================================
 -- 2. USUARIO ADMINISTRADOR POR DEFECTO
 -- ============================================
--- Contraseña: admin123 (CAMBIAR EN PRODUCCIÓN)
--- Nota: Hashea esta contraseña en producción usando bcrypt
-INSERT INTO "user" ("name", "email", "password", "role_id", "created_at")
+-- NOTA: La autenticación se realiza exclusivamente mediante Google OAuth.
+-- Este usuario admin es solo para propósitos de prueba o herramientas internas.
+-- ProviderID: usar un ID ficticio o real de Google OAuth.
+INSERT INTO "user" ("name", "email", "provider_id", "role_id", "created_at")
 VALUES (
   'Administrador',
   'admin@softpharos.com',
-  'admin123', -- TODO: Hashear con bcrypt en producción
+  'google-oauth-admin-123',
   (SELECT id FROM "role" WHERE name = 'admin'),
   NOW()
 )
